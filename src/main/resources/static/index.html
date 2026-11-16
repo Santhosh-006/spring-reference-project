@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeCARE - Healthcare Management Portal</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0284c7, #0f766e);
+            color: white;
+            padding: 24px 30px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #e0f2fe;
+            font-size: 14px;
+        }
+
+        .badge-capsule {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 860px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 8px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: var(--danger);
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-edit {
+            background: #e0f2fe;
+            color: var(--primary-dark);
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .btn-edit:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-confirmed {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-scheduled {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-cancelled {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Notification Alert */
+        #alert-box {
+            display: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div>
+                <h1>WeCARE Healthcare Portal</h1>
+                <p>Spring Boot REST API + JPA + MySQL Full-Stack Lab Project</p>
+            </div>
+            <div class="badge-capsule">
+                Port: 8080 | Java 21
+            </div>
+        </header>
+
+        <!-- Notification Banner -->
+        <div id="alert-box"></div>
+
+        <div class="main-grid">
+            <!-- Left Column: Form to Add/Edit Appointment -->
+            <div class="card">
+                <div class="card-title" id="form-title">Book New Appointment</div>
+                
+                <form id="appointment-form" onsubmit="handleFormSubmit(event)">
+                    <input type="hidden" id="appointment-id">
+
+                    <div class="form-group">
+                        <label for="patientName">Patient Full Name *</label>
+                        <input type="text" id="patientName" placeholder="e.g. Rahul Sharma" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doctorName">Doctor & Department *</label>
+                        <input type="text" id="doctorName" placeholder="e.g. Dr. K. Kumar (Cardiology)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem">Medical Reason / Symptoms *</label>
+                        <input type="text" id="problem" placeholder="e.g. Blood pressure checkup" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentDate">Appointment Date *</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Contact Phone *</label>
+                        <input type="tel" id="phone" placeholder="e.g. 9876543210" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Appointment Status</label>
+                        <select id="status">
+                            <option value="SCHEDULED">SCHEDULED</option>
+                            <option value="CONFIRMED">CONFIRMED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn-primary" id="submit-btn">Book Appointment</button>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column: Live Table of Appointments -->
+            <div class="card">
+                <div class="card-title">Live Appointments Directory</div>
+
+                <!-- Search box -->
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search by patient name..." onkeyup="filterAppointments()">
+                    <button class="btn-secondary" onclick="loadAppointments()">Refresh</button>
+                </div>
+
+                <!-- Appointments Table -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Patient Name</th>
+                                <th>Doctor</th>
+                                <th>Problem</th>
+                                <th>Date</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointment-table-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Loading appointments from MySQL database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript interacting with Spring Boot REST API -->
+    <script>
+        const API_BASE = '/api/appointments';
+        let allAppointments = [];
+
+        // 1. Fetch and Display All Appointments
+        async function loadAppointments() {
+            try {
+                const res = await fetch(API_BASE);
+                if (!res.ok) throw new Error("Failed to fetch data");
+                allAppointments = await res.json();
+                renderTable(allAppointments);
+            } catch (err) {
+                showAlert("Could not connect to Spring Boot backend: " + err.message, "error");
+                document.getElementById('appointment-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: red; padding: 20px;">
+                            Error connecting to Spring Boot REST API at <code>${API_BASE}</code>.<br>
+                            Ensure the backend application is running!
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // 2. Render Table Rows
+        function renderTable(data) {
+            const tbody = document.getElementById('appointment-table-body');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 20px; color: #64748b;">No appointments found. Use the form on the left to add one!</td></tr>';
+                return;
+            }
+
+            data.forEach(item => {
+                let badgeClass = 'badge-scheduled';
+                if (item.status === 'CONFIRMED') badgeClass = 'badge-confirmed';
+                if (item.status === 'CANCELLED') badgeClass = 'badge-cancelled';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>#${item.id}</strong></td>
+                    <td><strong>${escapeHtml(item.patientName)}</strong></td>
+                    <td>${escapeHtml(item.doctorName)}</td>
+                    <td>${escapeHtml(item.problem)}</td>
+                    <td>${escapeHtml(item.appointmentDate)}</td>
+                    <td>${escapeHtml(item.phone)}</td>
+                    <td><span class="badge ${badgeClass}">${escapeHtml(item.status)}</span></td>
+                    <td>
+                        <button class="btn-edit" onclick="editAppointment(${item.id})">Edit</button>
+                        <button class="btn-danger" onclick="deleteAppointment(${item.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 3. Handle Form Submit (POST for Create / PUT for Update)
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('appointment-id').value;
+            const payload = {
+                patientName: document.getElementById('patientName').value.trim(),
+                doctorName: document.getElementById('doctorName').value.trim(),
+                problem: document.getElementById('problem').value.trim(),
+                appointmentDate: document.getElementById('appointmentDate').value,
+                phone: document.getElementById('phone').value.trim(),
+                status: document.getElementById('status').value
+            };
+
+            try {
+                let res;
+                if (id) {
+                    // PUT /api/appointments/{id}
+                    res = await fetch(`${API_BASE}/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    // POST /api/appointments
+                    res = await fetch(API_BASE, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+
+                if (res.ok) {
+                    showAlert(id ? "Appointment updated successfully!" : "New appointment booked successfully!", "success");
+                    resetForm();
+                    loadAppointments();
+                } else {
+                    showAlert("Operation failed with status: " + res.status, "error");
+                }
+            } catch (err) {
+                showAlert("Error submitting request: " + err.message, "error");
+            }
+        }
+
+        // 4. Edit Appointment (Populate Form)
+        function editAppointment(id) {
+            const item = allAppointments.find(a => a.id === id);
+            if (!item) return;
+
+            document.getElementById('appointment-id').value = item.id;
+            document.getElementById('patientName').value = item.patientName;
+            document.getElementById('doctorName').value = item.doctorName;
+            document.getElementById('problem').value = item.problem;
+            document.getElementById('appointmentDate').value = item.appointmentDate;
+            document.getElementById('phone').value = item.phone;
+            document.getElementById('status').value = item.status;
+
+            document.getElementById('form-title').innerText = `Edit Appointment #${item.id}`;
+            document.getElementById('submit-btn').innerText = "Update Appointment";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 5. Delete Appointment (DELETE /api/appointments/{id})
+        async function deleteAppointment(id) {
+            if (!confirm(`Are you sure you want to delete appointment #${id}?`)) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showAlert(`Appointment #${id} deleted successfully!`, "success");
+                    loadAppointments();
+                } else {
+                    showAlert("Failed to delete appointment.", "error");
+                }
+            } catch (err) {
+                showAlert("Error: " + err.message, "error");
+            }
+        }
+
+        // 6. Search / Filter Appointments
+        function filterAppointments() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allAppointments.filter(a => 
+                a.patientName.toLowerCase().includes(term) ||
+                a.doctorName.toLowerCase().includes(term) ||
+                a.problem.toLowerCase().includes(term)
+            );
+            renderTable(filtered);
+        }
+
+        // Helper: Reset Form
+        function resetForm() {
+            document.getElementById('appointment-form').reset();
+            document.getElementById('appointment-id').value = '';
+            document.getElementById('form-title').innerText = "Book New Appointment";
+            document.getElementById('submit-btn').innerText = "Book Appointment";
+            // Set default date to today
+            document.getElementById('appointmentDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        // Helper: Show Alert
+        function showAlert(msg, type) {
+            const box = document.getElementById('alert-box');
+            box.className = type === 'success' ? 'alert-success' : 'alert-error';
+            box.innerText = msg;
+            box.style.display = 'block';
+            setTimeout(() => { box.style.display = 'none'; }, 4000);
+        }
+
+        // Helper: Escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Initial Load on Page Open
+        window.onload = () => {
+            resetForm();
+            loadAppointments();
+        };
+    </script>
+</body>
+</html>
